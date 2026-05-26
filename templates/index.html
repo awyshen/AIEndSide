@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>意图识别与指令解析测试平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            padding: 24px;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .input-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        #queryInput {
+            flex: 1;
+            padding: 14px 18px;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        #queryInput:focus {
+            border-color: #667eea;
+        }
+        
+        #submitBtn {
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        #submitBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        #submitBtn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .quick-examples {
+            margin-bottom: 20px;
+        }
+        
+        .quick-examples h4 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .example-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .example-tag {
+            padding: 6px 14px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .example-tag:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .result-section {
+            min-height: 300px;
+        }
+        
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .intent-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .intent-volume { background: #ff6b6b; color: white; }
+        .intent-music { background: #4ecdc4; color: white; }
+        .intent-app { background: #45b7d1; color: white; }
+        .intent-projector { background: #96ceb4; color: white; }
+        .intent-robot { background: #ffeaa7; color: #333; }
+        .intent-assistant { background: #dfe6e9; color: #333; }
+        .intent-chat { background: #a29bfe; color: white; }
+        .intent-multi { background: #fd79a8; color: white; }
+        .intent-unknown { background: #636e72; color: white; }
+        
+        .confidence-bar {
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+        
+        .confidence-high { background: linear-gradient(90deg, #00b894, #00cec9); }
+        .confidence-medium { background: linear-gradient(90deg, #fdcb6e, #f39c12); }
+        .confidence-low { background: linear-gradient(90deg, #ff7675, #fd79a8); }
+        
+        .source-badge {
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        
+        .source-rule { background: #00b894; color: white; }
+        .source-rule-high { background: #00cec9; color: white; }
+        .source-llm { background: #fdcb6e; color: #333; }
+        .source-hybrid { background: #a29bfe; color: white; }
+        .source-unknown { background: #636e72; color: white; }
+        
+        .params-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .param-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        
+        .param-label {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 4px;
+        }
+        
+        .param-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .multi-task-list {
+            margin-top: 16px;
+            border-top: 1px dashed #ddd;
+            padding-top: 16px;
+        }
+        
+        .multi-task-item {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 3px solid #fd79a8;
+        }
+        
+        .multi-task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .history-section {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .history-item:hover {
+            background: #e9ecef;
+        }
+        
+        .history-text {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        
+        .history-intent {
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+        
+        .stats-card {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            color: white;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .params-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-card {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>意图识别与指令解析测试平台</h1>
+            <p>基于规则模板 + 小LLM的端侧意图识别系统</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="card">
+                <div class="card-title">输入区域</div>
+                
+                <div class="input-section">
+                    <input type="text" id="queryInput" placeholder="请输入您的指令...">
+                    <button id="submitBtn" onclick="recognizeIntent()">
+                        <span id="btnText">识别</span>
+                        <span id="btnLoader" class="loading-spinner" style="display: none;"></span>
+                    </button>
+                </div>
+                
+                <div class="quick-examples">
+                    <h4>快速示例:</h4>
+                    <div class="example-tags">
+                        <span class="example-tag" onclick="setExample('调高音量播放周杰伦的七里香')">调高音量播放周杰伦的七里香</span>
+                        <span class="example-tag" onclick="setExample('打开投影仪播放电影阿凡达')">打开投影仪播放电影</span>
+                        <span class="example-tag" onclick="setExample('导航到客厅打开音乐')">导航到客厅打开音乐</span>
+                        <span class="example-tag" onclick="setExample('到客厅去打开投影仪播放电影阿凡达')">多任务示例</span>
+                        <span class="example-tag" onclick="setExample('今天天气怎么样')">聊天模式</span>
+                        <span class="example-tag" onclick="setExample('关闭音乐播放器休息一下')">关闭音乐休息</span>
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stat-item">
+                        <div class="stat-value" id="statTotal">0</div>
+                        <div class="stat-label">总查询数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="statSuccess">0</div>
+                        <div class="stat-label">识别成功</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="statAccuracy">0%</div>
+                        <div class="stat-label">准确率</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">识别结果</div>
+                
+                <div class="result-section" id="resultSection">
+                    <div class="empty-state">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🔍</div>
+                        <p>输入指令后点击"识别"按钮</p>
+                        <p style="font-size: 0.9rem; margin-top: 8px; opacity: 0.7;">支持单任务和多任务识别</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" style="margin-top: 20px;">
+            <div class="card-title">历史记录</div>
+            <div class="history-section" id="historySection">
+                <div class="empty-state">
+                    <p>暂无历史记录</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let queryHistory = [];
+        let stats = { total: 0, success: 0 };
+        
+        function setExample(text) {
+            document.getElementById('queryInput').value = text;
+        }
+        
+        async function recognizeIntent() {
+            const query = document.getElementById('queryInput').value.trim();
+            if (!query) return;
+            
+            const btn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnLoader = document.getElementById('btnLoader');
+            
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'inline-block';
+            
+            try {
+                const response = await fetch('/api/recognize', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+                
+                const result = await response.json();
+                displayResult(result, query);
+                addToHistory(query, result);
+                updateStats(result);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('resultSection').innerHTML = 
+                    '<div class="result-card"><p style="color: #ff6b6b;">请求失败，请检查服务器是否运行</p></div>';
+            } finally {
+                btn.disabled = false;
+                btnText.style.display = 'inline';
+                btnLoader.style.display = 'none';
+            }
+        }
+        
+        function displayResult(result, query) {
+            const section = document.getElementById('resultSection');
+            
+            if (result.intent === 'unknown') {
+                section.innerHTML = `
+                    <div class="result-card">
+                        <div class="result-header">
+                            <span class="intent-badge intent-unknown">未知意图</span>
+                            <span class="source-badge source-unknown">未识别</span>
+                        </div>
+                        <p style="color: #666; margin-bottom: 8px;">输入: ${escapeHtml(query)}</p>
+                        <p style="color: #ff6b6b;">该请求将移交下游处理</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const intentClass = getIntentClass(result.intent);
+            const sourceClass = getSourceClass(result.source);
+            const confidenceClass = getConfidenceClass(result.confidence);
+            const confidencePercent = Math.round(result.confidence * 100);
+            
+            let paramsHtml = '';
+            if (result.params && Object.keys(result.params).length > 0) {
+                paramsHtml = '<div class="params-grid">';
+                Object.entries(result.params).forEach(([key, value]) => {
+                    paramsHtml += `
+                        <div class="param-item">
+                            <div class="param-label">${key}</div>
+                            <div class="param-value">${escapeHtml(value)}</div>
+                        </div>
+                    `;
+                });
+                paramsHtml += '</div>';
+            }
+            
+            let multiTaskHtml = '';
+            if (result.query_type === 'multi_task' && result.tasks) {
+                multiTaskHtml = '<div class="multi-task-list"><h4 style="margin-bottom: 12px; color: #666;">任务拆分:</h4>';
+                result.tasks.forEach((task, index) => {
+                    const taskIntentClass = getIntentClass(task.intent);
+                    multiTaskHtml += `
+                        <div class="multi-task-item">
+                            <div class="multi-task-header">
+                                <span>任务 ${index + 1}: <span class="intent-badge ${taskIntentClass}">${task.intent}</span></span>
+                                <span style="font-size: 0.8rem; color: #888;">置信度: ${Math.round(task.confidence * 100)}%</span>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #555;">
+                                值: ${task.value || '-'} | 参数: ${JSON.stringify(task.params)}
+                            </div>
+                        </div>
+                    `;
+                });
+                multiTaskHtml += '</div>';
+            }
+            
+            section.innerHTML = `
+                <div class="result-card">
+                    <div class="result-header">
+                        <span class="intent-badge ${intentClass}">${result.intent}</span>
+                        <span class="source-badge ${sourceClass}">${getSourceLabel(result.source)}</span>
+                    </div>
+                    <p style="color: #666; margin-bottom: 8px;">输入: ${escapeHtml(query)}</p>
+                    <div>
+                        <div style="font-size: 0.9rem; color: #888; margin-bottom: 4px;">置信度: ${confidencePercent}%</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill ${confidenceClass}" style="width: ${confidencePercent}%"></div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px; font-size: 0.9rem; color: #555;">
+                        值: <span style="font-weight: 600;">${result.value || '-'}</span>
+                    </div>
+                    ${paramsHtml}
+                    ${multiTaskHtml}
+                </div>
+            `;
+        }
+        
+        function addToHistory(query, result) {
+            const history = document.getElementById('historySection');
+            const intentClass = getIntentClass(result.intent);
+            const intentLabel = result.intent === 'unknown' ? '未知' : result.intent;
+            
+            const item = document.createElement('div');
+            item.className = 'history-item';
+            item.innerHTML = `
+                <span class="history-text">${escapeHtml(query)}</span>
+                <span class="history-intent ${intentClass}">${intentLabel}</span>
+            `;
+            item.onclick = () => {
+                document.getElementById('queryInput').value = query;
+                recognizeIntent();
+            };
+            
+            queryHistory.unshift({ query, result });
+            if (queryHistory.length > 20) queryHistory.pop();
+            
+            if (queryHistory.length === 1) {
+                history.innerHTML = '';
+            }
+            history.insertBefore(item, history.firstChild);
+        }
+        
+        function updateStats(result) {
+            stats.total++;
+            if (result.intent !== 'unknown') {
+                stats.success++;
+            }
+            
+            document.getElementById('statTotal').textContent = stats.total;
+            document.getElementById('statSuccess').textContent = stats.success;
+            const accuracy = stats.total > 0 ? Math.round((stats.success / stats.total) * 100) : 0;
+            document.getElementById('statAccuracy').textContent = accuracy + '%';
+        }
+        
+        function getIntentClass(intent) {
+            const classes = {
+                'volume_control': 'intent-volume',
+                'music_control': 'intent-music',
+                'app_control': 'intent-app',
+                'projector_control': 'intent-projector',
+                'robot_control': 'intent-robot',
+                'assistant_control': 'intent-assistant',
+                'chat': 'intent-chat',
+                'multi_task': 'intent-multi',
+                'unknown': 'intent-unknown'
+            };
+            return classes[intent] || 'intent-unknown';
+        }
+        
+        function getSourceClass(source) {
+            if (source.includes('rule_based_high_confidence')) return 'source-rule-high';
+            if (source.includes('rule_based')) return 'source-rule';
+            if (source.includes('llm')) return 'source-llm';
+            if (source.includes('hybrid')) return 'source-hybrid';
+            return 'source-unknown';
+        }
+        
+        function getSourceLabel(source) {
+            if (source.includes('rule_based_high_confidence')) return '规则高置信';
+            if (source.includes('rule_based')) return '规则匹配';
+            if (source.includes('llm')) return 'LLM兜底';
+            if (source.includes('hybrid')) return '混合决策';
+            return '未知';
+        }
+        
+        function getConfidenceClass(confidence) {
+            if (confidence >= 0.8) return 'confidence-high';
+            if (confidence >= 0.5) return 'confidence-medium';
+            return 'confidence-low';
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        document.getElementById('queryInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                recognizeIntent();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,514 @@
+{
+  "description": "意图识别测试用例集合",
+  "version": "1.0",
+  "test_cases": [
+    {
+      "id": "tc001",
+      "input": "音量调低一些",
+      "expected": {
+        "intent": "volume_control",
+        "value": "speaker",
+        "params": {"volume": "down"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc002",
+      "input": "声音小一点",
+      "expected": {
+        "intent": "volume_control",
+        "value": "speaker",
+        "params": {"volume": "down"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc024",
+      "input": "声音太小了",
+      "expected": {
+        "intent": "volume_control",
+        "value": "speaker",
+        "params": {"volume": "up"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc025",
+      "input": "声音太大了",
+      "expected": {
+        "intent": "volume_control",
+        "value": "speaker",
+        "params": {"volume": "down"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc026",
+      "input": "声音太响了",
+      "expected": {
+        "intent": "volume_control",
+        "value": "speaker",
+        "params": {"volume": "down"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc027",
+      "input": "声音太轻了",
+      "expected": {
+        "intent": "volume_control",
+        "value": "speaker",
+        "params": {"volume": "up"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc028",
+      "input": "音量大点",
+      "expected": {
+        "intent": "volume_control",
+        "value": "speaker",
+        "params": {"volume": "up"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc029",
+      "input": "音量小点",
+      "expected": {
+        "intent": "volume_control",
+        "value": "speaker",
+        "params": {"volume": "down"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc030",
+      "input": "静音",
+      "expected": {
+        "intent": "volume_control",
+        "value": "speaker",
+        "params": {"volume": "mute"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc031",
+      "input": "播放下一首",
+      "expected": {
+        "intent": "music_control",
+        "value": "music_player",
+        "params": {"control": "next"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc032",
+      "input": "上一首",
+      "expected": {
+        "intent": "music_control",
+        "value": "music_player",
+        "params": {"control": "previous"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc033",
+      "input": "关闭QQ音乐",
+      "expected": {
+        "intent": "music_control",
+        "value": "music_player",
+        "params": {"control": "close", "app": "qq_music_app"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc034",
+      "input": "播放电影阿凡达",
+      "expected": {
+        "intent": "app_control",
+        "value": "video_player",
+        "params": {"control": "play", "film": "阿凡达"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc035",
+      "input": "关闭爱奇艺",
+      "expected": {
+        "intent": "app_control",
+        "value": "video_player",
+        "params": {"control": "close", "app": "iqiyi_video_app"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc036",
+      "input": "把投影打开",
+      "expected": {
+        "intent": "projector_control",
+        "value": "projector",
+        "params": {"control": "open"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc037",
+      "input": "投影仪关了",
+      "expected": {
+        "intent": "projector_control",
+        "value": "projector",
+        "params": {"control": "close"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc038",
+      "input": "取消导航",
+      "expected": {
+        "intent": "robot_control",
+        "value": "nav",
+        "params": {"control": "cancel"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc039",
+      "input": "回去充电",
+      "expected": {
+        "intent": "robot_control",
+        "value": "charge",
+        "params": {"control": "start"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc040",
+      "input": "停止充电",
+      "expected": {
+        "intent": "robot_control",
+        "value": "charge",
+        "params": {"control": "stop"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc041",
+      "input": "取消充电",
+      "expected": {
+        "intent": "robot_control",
+        "value": "charge",
+        "params": {"control": "cancel"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc042",
+      "input": "退下吧",
+      "expected": {
+        "intent": "assistant_control",
+        "value": "assistant",
+        "params": {"control": "sleep"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc043",
+      "input": "先下去吧",
+      "expected": {
+        "intent": "assistant_control",
+        "value": "assistant",
+        "params": {"control": "sleep"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc044",
+      "input": "导航到卧室",
+      "expected": {
+        "intent": "robot_control",
+        "value": "nav",
+        "params": {"place": "卧室"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc045",
+      "input": "播放周杰伦的稻香",
+      "expected": {
+        "intent": "music_control",
+        "value": "music_player",
+        "params": {"control": "play", "singer": "周杰伦", "song": "稻香"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc046",
+      "input": "打开音乐播放器",
+      "expected": {
+        "intent": "music_control",
+        "value": "music_player",
+        "params": {"control": "open", "app": "default_music_app"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc047",
+      "input": "播放本地视频",
+      "expected": {
+        "intent": "app_control",
+        "value": "video_player",
+        "params": {"control": "open", "app": "default_video_app"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc048",
+      "input": "播本地视频",
+      "expected": {
+        "intent": "app_control",
+        "value": "video_player",
+        "params": {"control": "open", "app": "default_video_app"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc049",
+      "input": "播放喜剧人单口季",
+      "expected": {
+        "intent": "app_control",
+        "value": "video_player",
+        "params": {"control": "play", "program": "喜剧人单口季"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc050",
+      "input": "停止播放视频",
+      "expected": {
+        "intent": "app_control",
+        "value": "video_player",
+        "params": {"control": "stop"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc003",
+      "input": "声音太大了",
+      "expected": {
+        "intent": "volume_control",
+        "value": "speaker",
+        "params": {"volume": "down"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc004",
+      "input": "声音有点小",
+      "expected": {
+        "intent": "volume_control",
+        "value": "speaker",
+        "params": {"volume": "up"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc005",
+      "input": "播放上一首音乐",
+      "expected": {
+        "intent": "music_control",
+        "value": "music_player",
+        "params": {"control": "previous"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc006",
+      "input": "播放蔡琴的歌",
+      "expected": {
+        "intent": "music_control",
+        "value": "music_player",
+        "params": {"control": "play", "singer": "蔡琴"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc007",
+      "input": "播放歌曲渡口",
+      "expected": {
+        "intent": "music_control",
+        "value": "music_player",
+        "params": {"control": "play", "song": "渡口"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc008",
+      "input": "不要放歌了",
+      "expected": {
+        "intent": "music_control",
+        "value": "music_player",
+        "params": {"control": "stop"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc009",
+      "input": "放本地视频",
+      "expected": {
+        "intent": "app_control",
+        "value": "video_player",
+        "params": {"control": "open", "app": "default_video_app"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc010",
+      "input": "到客厅去",
+      "expected": {
+        "intent": "robot_control",
+        "value": "nav",
+        "params": {"place": "客厅"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc011",
+      "input": "去客厅吧",
+      "expected": {
+        "intent": "robot_control",
+        "value": "nav",
+        "params": {"place": "客厅"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc012",
+      "input": "不要去客厅了",
+      "expected": {
+        "intent": "robot_control",
+        "value": "nav",
+        "params": {"control": "cancel"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc013",
+      "input": "去充电桩",
+      "expected": {
+        "intent": "robot_control",
+        "value": "charge",
+        "params": {"control": "start"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc014",
+      "input": "不要去充电了",
+      "expected": {
+        "intent": "robot_control",
+        "value": "charge",
+        "params": {"control": "stop"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc015",
+      "input": "暂停音乐",
+      "expected": {
+        "intent": "music_control",
+        "value": "music_player",
+        "params": {"control": "pause"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc016",
+      "input": "继续播放",
+      "expected": {
+        "intent": "music_control",
+        "value": "music_player",
+        "params": {"control": "play"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc017",
+      "input": "打开投影仪",
+      "expected": {
+        "intent": "projector_control",
+        "value": "projector",
+        "params": {"control": "open"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc018",
+      "input": "关闭投影仪",
+      "expected": {
+        "intent": "projector_control",
+        "value": "projector",
+        "params": {"control": "close"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc019",
+      "input": "打开爱奇艺",
+      "expected": {
+        "intent": "app_control",
+        "value": "video_player",
+        "params": {"control": "open", "app": "iqiyi_video_app"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc020",
+      "input": "休息一下",
+      "expected": {
+        "intent": "assistant_control",
+        "value": "assistant",
+        "params": {"control": "sleep"},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc021",
+      "input": "我们聊一下吧",
+      "expected": {
+        "intent": "chat",
+        "value": "chat",
+        "params": {},
+        "confidence": 0.99
+      }
+    },
+    {
+      "id": "tc022",
+      "input": "到客厅打开投影仪",
+      "expected": {
+        "intent": "multi_task",
+        "value": "multi",
+        "params": {},
+        "tasks": [
+          {"intent": "robot_control", "value": "nav", "params": {"place": "客厅"}, "confidence": 0.98},
+          {"intent": "projector_control", "value": "projector", "params": {"control": "open"}, "confidence": 0.99}
+        ],
+        "confidence": 0.98
+      }
+    },
+    {
+      "id": "tc023",
+      "input": "调高音量播放音乐",
+      "expected": {
+        "intent": "multi_task",
+        "value": "multi",
+        "params": {},
+        "tasks": [
+          {"intent": "volume_control", "value": "speaker", "params": {"volume": "up"}, "confidence": 0.99},
+          {"intent": "music_control", "value": "music_player", "params": {"control": "play"}, "confidence": 0.99}
+        ],
+        "confidence": 0.99
+      }
+    }
+  ]
+}
