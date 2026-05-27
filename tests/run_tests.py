@@ -10,7 +10,7 @@ model_config = {
     "model_name": "minicpm5-1b"
 }
 
-llm = QwenAPI(model_config=model_config)
+llm = QwenAPI(model_config=None)
 
 with open('/Users/terminus/Desktop/workspace/application/terminus/AIEndSide/tests/test_cases.json', 'r', encoding='utf-8') as f:
     test_data = json.load(f)
