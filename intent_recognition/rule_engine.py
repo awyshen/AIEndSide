@@ -165,6 +165,14 @@ class RuleEngine:
                     pattern_matched = True
 
             if not pattern_matched:
+                replay_patterns = ["再来一遍", "再播放一遍", "重播", "再来一次"]
+                for pattern in replay_patterns:
+                    if pattern in text:
+                        params["control"] = "previous"
+                        pattern_matched = True
+                        break
+
+            if not pattern_matched:
                 for pattern in self.intent_keywords[intent]["patterns"].get("previous", []):
                     if pattern.lower() in text.lower():
                         params["control"] = "previous"
@@ -497,6 +505,10 @@ class RuleEngine:
             ("不要去充电桩了", "robot_control", 0.9),
             ("不要去充电", "robot_control", 0.9),
             ("不要去充电桩", "robot_control", 0.9),
+            ("再来一遍", "music_control", 0.9),
+            ("再来一遍刚才那歌", "music_control", 0.9),
+            ("再播放一遍", "music_control", 0.9),
+            ("重播", "music_control", 0.9),
             ("我想听.*?的歌", "music_control", 0.85),
             ("放一首.*?的歌", "music_control", 0.85),
             ("我想听.*?", "music_control", 0.85),
@@ -517,6 +529,9 @@ class RuleEngine:
             ("讲个.*故事", "chat", 0.95),
             ("能帮我做什么", "chat", 0.95),
             ("你能做什么", "chat", 0.95),
+            ("介绍一下你自己", "chat", 0.95),
+            ("介绍你自己", "chat", 0.95),
+            ("自我介绍", "chat", 0.95),
         ]
 
         special_case_matched = False
